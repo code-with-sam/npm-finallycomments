@@ -1,0 +1,1 @@
+iFrameResize( {}, '.finally-comments iframe' );

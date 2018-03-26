@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/code-with-sam/npm-finallycomments/issues"
   },
-  "homepage": "https://github.com/code-with-sam/npm-finallycomments#readme"
+  "homepage": "https://github.com/code-with-sam/npm-finallycomments#readme",
+  "dependencies": {
+    "iframe-resizer": "^3.6.0"
+  }
 }
