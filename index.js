@@ -1,4 +1,4 @@
-// const frame = require('iframe-resizer')
+const frame = require('iframe-resizer')
 
 let finallySystem = {}
 
@@ -26,6 +26,11 @@ module.exports.generateFromSteemPost = (steemitUrl, options) => {
   iframe.src = `https://finallycomments.com/thread/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`
   iframe.width = '100%'
   iframe.style = 'border: none;'
-  iframe.classList.add('finally-frame')
+  iframe.classList.add('finallycomments__frame')
   return {iframe, settings}
+}
+
+module.exports.resize = ()  => {
+  let selector = '.finallycomments__frame'
+  frame.iframeResizer( {}, `${selector}`);
 }
