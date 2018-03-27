@@ -12,19 +12,27 @@ finallySystem.getPartsFromLink = (url) => {
       category: parts.pop()
     }
 }
-module.exports.generateFromSteemPost = (steemitUrl, options) => {
-  if (!options) options = {}
+finallySystem.createFrame = (embedType, url, options) => {
   let settings = {
     message: 'finally-frame-load',
-    reputation: options.reputation || true,
-    profile: options.profile || true,
-    values: options.values || true,
-    generated: false
+    reputation: true,
+    profile: true,
+    values: true
   }
+  settings = Object.assign(settings, options || {})
   Object.keys(settings).map((key, index) => settings[key] = settings[key].toString() );
+  let finallyUrl;
+
+  if(embedType === 'steem' || embedType === 'custom'){
+    let urlParts = finallySystem.getPartsFromLink(url)
+    finallyUrl = `https://finallycomments.com/thread/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`
+  }
+  if(embedType === 'api'){
+    finallyUrl = url
+  }
+
   let iframe = document.createElement('iframe', { scrolling: 'no' })
-  let urlParts = finallySystem.getPartsFromLink(steemitUrl)
-  iframe.src = `https://finallycomments.com/thread/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`
+  iframe.src = finallyUrl
   iframe.width = '100%'
   iframe.style = 'border: none;'
   iframe.classList.add('finallycomments__frame')
