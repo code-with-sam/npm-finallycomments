@@ -1,6 +1,39 @@
 const frame = require('iframe-resizer')
+const finallySystem = {}
 
-let finallySystem = {}
+finallySystem.init = () => {
+    window.addEventListener('message', finallySystem.receiveMessage, false);
+
+}
+
+finallySystem.receiveMessage = (event) => {
+  if (event.data.message == 'sign-in'){
+    if (event.origin !== 'https://finallycomments.com' ) return;
+    let iframe = document.querySelector('.finallycomments__frame')
+    iframe.style = 'height: 600px; border: none;'
+  }
+
+  if (event.data.message == 'new-comment'){
+    if (event.origin !== 'https://finallycomments.com' ) return;
+    let frameOffset = finallySystem.getDistanceFromTop(document.querySelector('.finallycomments__frame'))
+    let frameHeight = document.querySelector('.finallycomments__frame').getBoundingClientRect().height;
+
+    if ( event.data.depth === undefined || event.data.depth === 0 ){
+      document.documentElement.scrollTop = ( frameOffset +  frameHeight )
+    } else {
+      document.documentElement.scrollTop = ( event.data.offset +  frameOffset - 300)
+    }
+  }
+}
+
+finallySystem.getDistanceFromTop = (element) => {
+    let yPos = 0;
+    while(element) {
+        yPos += (element.offsetTop);
+        element = element.offsetParent;
+    }
+    return yPos;
+}
 
 finallySystem.getPartsFromLink = (url) => {
     let lastChar = url.substr(url.length -1);
@@ -12,6 +45,7 @@ finallySystem.getPartsFromLink = (url) => {
       category: parts.pop()
     }
 }
+
 finallySystem.createFrame = (embedType, url, options) => {
   let settings = {
     message: 'finally-frame-load',
@@ -76,4 +110,8 @@ module.exports.appendTo = (selector, embedType, id, options) => {
 module.exports.resize = ()  => {
   let selector = '.finallycomments__frame'
   frame.iframeResizer( {}, `${selector}`);
+}
+
+module.exports.init = () => {
+  finallySystem.init()
 }
