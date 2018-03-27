@@ -40,8 +40,38 @@ finallySystem.createFrame = (embedType, url, options) => {
     document.querySelector('.finallycomments__frame').contentWindow.postMessage(settings,'*')
     frame.iframeResizer( {}, '.finallycomments__frame');
   }
-  return {iframe, settings}
+  return iframe
 }
+
+module.exports.loadFromSteemitUrl = (steemitUrl, options) => {
+  let settings = Object.assign({generated: false}, options || {})
+  return finallySystem.createFrame('steem', steemitUrl, settings)
+}
+
+module.exports.loadFromThreadId = (threadId, options) => {
+  let settings = Object.assign({generated: true}, options || {})
+  return finallySystem.createFrame('custom', threadId, settings)
+}
+
+module.exports.loadFromApi = (threadId, options) => {
+  let settings = Object.assign({generated: true}, options || {})
+  return finallySystem.createFrame('api', threadId, settings)
+}
+
+module.exports.appendTo = (selector, embedType, id, options) => {
+  if(embedType === 'steem'){
+    return document.querySelector(selector).appendChild(module.exports.loadFromSteemitUrl(id, options))
+  }
+  if(embedType === 'thread'){
+    return document.querySelector(selector).appendChild(module.exports.loadFromThreadId(id, options))
+  }
+  if(embedType === 'api'){
+    return document.querySelector(selector).appendChild(module.exports.loadFromApi(id, options))
+  }
+  throw 'embedType must be specificed - steem || api || custom'
+}
+
+
 
 module.exports.resize = ()  => {
   let selector = '.finallycomments__frame'
