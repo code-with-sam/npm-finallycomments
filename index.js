@@ -3,7 +3,6 @@ const finallySystem = {}
 
 finallySystem.init = () => {
     window.addEventListener('message', finallySystem.receiveMessage, false);
-
 }
 
 finallySystem.receiveMessage = (event) => {
@@ -57,12 +56,12 @@ finallySystem.createFrame = (embedType, url, options) => {
   Object.keys(settings).map((key, index) => settings[key] = settings[key].toString() );
   let finallyUrl;
 
-  if(embedType === 'steem' || embedType === 'custom'){
+  if(embedType === 'steem'){
     let urlParts = finallySystem.getPartsFromLink(url)
     finallyUrl = `https://finallycomments.com/thread/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`
   }
-  if(embedType === 'api'){
-    finallyUrl = url
+  if(embedType === 'thread'){
+    finallyUrl = `https://finallycomments.com/thread/finallycomments/@${settings.username}/${url}`
   }
 
   let iframe = document.createElement('iframe', { scrolling: 'no' })
@@ -82,25 +81,20 @@ module.exports.loadFromSteemitUrl = (steemitUrl, options) => {
   return finallySystem.createFrame('steem', steemitUrl, settings)
 }
 
-module.exports.loadFromThreadId = (threadId, options) => {
-  let settings = Object.assign({generated: true}, options || {})
-  return finallySystem.createFrame('custom', threadId, settings)
+module.exports.loadThread = (slug, username, options) => {
+  if (username === undefined || typeof username !== 'string') throw 'Username must be specified when using appendTo - Thread'
+  let settings = Object.assign({generated: true, username}, options || {})
+  return finallySystem.createFrame('thread', slug, settings)
 }
 
-module.exports.loadFromApi = (threadId, options) => {
-  let settings = Object.assign({generated: true}, options || {})
-  return finallySystem.createFrame('api', threadId, settings)
-}
-
-module.exports.appendTo = (selector, embedType, id, options) => {
+module.exports.appendTo = (selector, embedType, id, username, options) => {
+  console.log(selector, embedType, id, username, options)
+  if (typeof username !== 'string') options = username
   if(embedType === 'steem'){
     return document.querySelector(selector).appendChild(module.exports.loadFromSteemitUrl(id, options))
   }
   if(embedType === 'thread'){
-    return document.querySelector(selector).appendChild(module.exports.loadFromThreadId(id, options))
-  }
-  if(embedType === 'api'){
-    return document.querySelector(selector).appendChild(module.exports.loadFromApi(id, options))
+    return document.querySelector(selector).appendChild(module.exports.loadThread(id, username, options))
   }
   throw 'embedType must be specificed - steem || api || custom'
 }
