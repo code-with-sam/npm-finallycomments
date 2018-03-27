@@ -21,12 +21,17 @@ module.exports.generateFromSteemPost = (steemitUrl, options) => {
     values: options.values || true,
     generated: false
   }
+  Object.keys(settings).map((key, index) => settings[key] = settings[key].toString() );
   let iframe = document.createElement('iframe', { scrolling: 'no' })
   let urlParts = finallySystem.getPartsFromLink(steemitUrl)
   iframe.src = `https://finallycomments.com/thread/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`
   iframe.width = '100%'
   iframe.style = 'border: none;'
   iframe.classList.add('finallycomments__frame')
+  iframe.onload = () => {
+    document.querySelector('.finallycomments__frame').contentWindow.postMessage(settings,'*')
+    frame.iframeResizer( {}, '.finallycomments__frame');
+  }
   return {iframe, settings}
 }
 
