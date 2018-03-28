@@ -45,7 +45,7 @@ finallySystem.getPartsFromLink = (url) => {
     }
 }
 
-finallySystem.createFrame = (embedType, url, options) => {
+finallySystem.createUrlParams = (embedType, url, options)  => {
   let settings = {
     message: 'finally-frame-load',
     reputation: true,
@@ -54,18 +54,14 @@ finallySystem.createFrame = (embedType, url, options) => {
   }
   settings = Object.assign(settings, options || {})
   Object.keys(settings).map((key, index) => settings[key] = settings[key].toString() );
-  let finallyUrl;
+  if(embedType === 'steem') return finallySystem.getPartsFromLink(url)
+  if(embedType === 'thread') return { permlink: '${url}', author: `@${settings.username}`, category: 'finallycomments' }
+}
 
-  if(embedType === 'steem'){
-    let urlParts = finallySystem.getPartsFromLink(url)
-    finallyUrl = `https://finallycomments.com/thread/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`
-  }
-  if(embedType === 'thread'){
-    finallyUrl = `https://finallycomments.com/thread/finallycomments/@${settings.username}/${url}`
-  }
-
+finallySystem.createFrame = (embedType, url, options) => {
+  let urlParams = finallySystem.createUrlParams(embedType, url, options)
   let iframe = document.createElement('iframe', { scrolling: 'no' })
-  iframe.src = finallyUrl
+  iframe.src = `https://finallycomments.com/thread/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`
   iframe.width = '100%'
   iframe.style = 'border: none;'
   iframe.classList.add('finallycomments__frame')
@@ -88,7 +84,6 @@ module.exports.loadThread = (slug, username, options) => {
 }
 
 module.exports.appendTo = (selector, embedType, id, username, options) => {
-  console.log(selector, embedType, id, username, options)
   if (typeof username !== 'string') options = username
   if(embedType === 'steem'){
     return document.querySelector(selector).appendChild(module.exports.loadFromSteemitUrl(id, options))
@@ -96,14 +91,12 @@ module.exports.appendTo = (selector, embedType, id, username, options) => {
   if(embedType === 'thread'){
     return document.querySelector(selector).appendChild(module.exports.loadThread(id, username, options))
   }
-  throw 'embedType must be specificed - steem || api || custom'
+  throw 'embedType must be specificed as "steem" or "thread"'
 }
 
-
-
-module.exports.resize = ()  => {
-  let selector = '.finallycomments__frame'
-  frame.iframeResizer( {}, `${selector}`);
+module.exports.directThreadLink = (embedType, url, options) => {
+  let urlParams = finallySystem.createUrlParams(embedType, url, options)
+  return `https://finallycomments.com/viewer/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`  
 }
 
 module.exports.init = () => {
