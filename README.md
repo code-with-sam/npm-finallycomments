@@ -44,7 +44,7 @@ finallycomments.appendTo('main', 'thread', 'finally-hellomars', 'sambillingham',
 ### directThreadLink(embedType, url, options)
 ```
 let href = directThreadLink('steem', 'https://steemit.com/utopian-io/@sambillingham/finally-comments-api-and-new-dashboard-features')
-let link = `<a href="${link}">Check out this discussion we has on Steem yesterday</a>`
+let link = `<a href="${href}">Check out this discussion we has on Steem yesterday</a>`
 ````
 
 ## Contribution
