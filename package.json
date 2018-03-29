@@ -15,7 +15,7 @@
     "steem"
   ],
   "author": "Sam Billingham",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/code-with-sam/npm-finallycomments/issues"
   },
