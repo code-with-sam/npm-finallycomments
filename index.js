@@ -6,12 +6,6 @@ finallySystem.init = () => {
 }
 
 finallySystem.receiveMessage = (event) => {
-  if (event.data.message == 'sign-in'){
-    if (event.origin !== 'https://finallycomments.com' ) return;
-    let iframe = document.querySelector('.finallycomments__frame')
-    iframe.style = 'height: 600px; border: none;'
-  }
-
   if (event.data.message == 'new-comment'){
     if (event.origin !== 'https://finallycomments.com' ) return;
     let frameOffset = finallySystem.getDistanceFromTop(document.querySelector('.finallycomments__frame'))

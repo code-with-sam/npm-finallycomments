@@ -50,3 +50,7 @@ let link = `<a href="${href}">Check out this discussion we has on Steem yesterda
 ## Contribution
 
 If you want to contribute to this package create a fork, make your changes and create a pull request.
+
+
+## Chnage Log
+v0.1.1 - remove sign-in window message. Not needed with the new popup auth flow.
