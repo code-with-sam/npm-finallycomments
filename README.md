@@ -53,5 +53,5 @@ If you want to contribute to this package create a fork, make your changes and c
 
 
 ## Change Log
-v0.1.2 - fixed issue with incorrect variable names for urlParts
-v0.1.1 - remove sign-in window message. Not needed with the new popup auth flow.
+- v0.1.2 - fixed issue with incorrect variable names for urlParts
+- v0.1.1 - remove sign-in window message. Not needed with the new popup auth flow.
