@@ -54,7 +54,7 @@ finallySystem.createUrlParams = (embedType, url, options)  => {
 
 finallySystem.createFrame = (embedType, url, options) => {
   let urlParams = finallySystem.createUrlParams(embedType, url, options)
-  let settings = Object.assign({generated: false}, options || {})
+  let settings = Object.assign({generated: false, message: 'finally-frame-load'}, options || {})
   let iframe = document.createElement('iframe', { scrolling: 'no' })
   iframe.src = `https://finallycomments.com/thread/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
   iframe.width = '100%'
