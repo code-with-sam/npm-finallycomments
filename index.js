@@ -49,13 +49,14 @@ finallySystem.createUrlParams = (embedType, url, options)  => {
   settings = Object.assign(settings, options || {})
   Object.keys(settings).map((key, index) => settings[key] = settings[key].toString() );
   if(embedType === 'steem') return finallySystem.getPartsFromLink(url)
-  if(embedType === 'thread') return { permlink: '${url}', author: `@${settings.username}`, category: 'finallycomments' }
+  if(embedType === 'thread') return { permlink: `${url}`, author: `@${settings.username}`, category: 'finallycomments' }
 }
 
 finallySystem.createFrame = (embedType, url, options) => {
   let urlParams = finallySystem.createUrlParams(embedType, url, options)
+  let settings = Object.assign({generated: false}, options || {})
   let iframe = document.createElement('iframe', { scrolling: 'no' })
-  iframe.src = `https://finallycomments.com/thread/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`
+  iframe.src = `https://finallycomments.com/thread/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
   iframe.width = '100%'
   iframe.style = 'border: none;'
   iframe.classList.add('finallycomments__frame')
@@ -90,7 +91,7 @@ module.exports.appendTo = (selector, embedType, id, username, options) => {
 
 module.exports.directThreadLink = (embedType, url, options) => {
   let urlParams = finallySystem.createUrlParams(embedType, url, options)
-  return `https://finallycomments.com/viewer/${urlParts.category}/${urlParts.author}/${urlParts.permlink}`  
+  return `https://finallycomments.com/viewer/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
 }
 
 module.exports.init = () => {
