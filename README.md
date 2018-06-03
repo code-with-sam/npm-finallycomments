@@ -8,7 +8,9 @@ To install this library run: `npm install finallycomments --save`
 
 ## Methods
 
-`init()` : Adds an event listener to the window for 'message' used to resize the iframe to full height of contents on load.
+`init()` : Adds an event listener to the window for 'message' used to resize the iframe to full height of contents on load. Looks for any Finally embed code on the page (this embed code is HTML generated on [https://finallycomments.com](https://finallycomments.com])), if embed code is found with the class `finally-comments` it will be automatically loaded.
+
+`loadEmbed(selector)` : load the finally iframe for HTML code where you have changed the selector.
 
 `loadFromSteemitUrl(steemitUrl, options)` : returns an iframe html node
 
@@ -19,20 +21,53 @@ To install this library run: `npm install finallycomments --save`
 `directThreadLink(embedType, url, options)` : returns a url String that links to the Finally thread viewer.
 
 ## Examples
+
+### init()
+Any embeds found on page with class `finally-comments` will be loaded. Event Listener added to Window for incoming messages from frame parent (used to resize iframe).
+```
+import finallycomments from 'finallycomments'
+finallycomments.init()
+```
+
+### loadEmbed(selector)
+Example HTML on Page -
+```
+<section class="post__comments"
+    data-id="https://steemit.com/utopian-io/@sambillingham/introducing-move-club-get-rewarded-for-working-out"
+    data-reputation="true"
+    data-values="true"
+    data-profile="true"
+    data-generated="false">
+</section>
+```
+
+```
+import finallycomments from 'finallycomments'
+finallycomments.init()
+finallycomments.loadEmbed('.post__comments')
+```
+
+
 The options object is optional.
 
 ### loadFromSteemitUrl(steemitUrl, options)
 ```
-let iframe = loadFromSteemitUrl('https://steemit.com/utopian-io/@sambillingham/finally-comments-api-and-new-dashboard-features')
+import finallycomments from 'finallycomments'
+finallycomments.init()
+let iframe = finallycomments.loadFromSteemitUrl('https://steemit.com/utopian-io/@sambillingham/finally-comments-api-and-new-dashboard-features')
 ```
 
 ### loadThread(slug, username, options)
 ```
+import finallycomments from 'finallycomments'
+finallycomments.init()
 let thread = finallycomments.loadThread('finally-hellomars', 'sambillingham', {values: false})
 ```
 
 ### appendTo(selector, embedType, id, username, options)
 ```
+import finallycomments from 'finallycomments'
+finallycomments.init()
 let options = {
   values: true,
   reputation: false,
@@ -43,7 +78,9 @@ finallycomments.appendTo('main', 'thread', 'finally-hellomars', 'sambillingham',
 
 ### directThreadLink(embedType, url, options)
 ```
-let href = directThreadLink('steem', 'https://steemit.com/utopian-io/@sambillingham/finally-comments-api-and-new-dashboard-features')
+import finallycomments from 'finallycomments'
+finallycomments.init()
+let href = finallycomments.directThreadLink('steem', 'https://steemit.com/utopian-io/@sambillingham/finally-comments-api-and-new-dashboard-features')
 let link = `<a href="${href}">Check out this discussion we has on Steem yesterday</a>`
 ````
 
