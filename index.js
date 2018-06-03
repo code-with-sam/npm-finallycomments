@@ -115,6 +115,15 @@ module.exports.directThreadLink = (embedType, url, options) => {
   return `https://finallycomments.com/viewer/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
 }
 
+module.exports.loadEmbed = (selector) => {
+  let embedFound = document.querySelector(selector) !== null ? true : false
+  if (embedFound){
+    finallySystem.loadEmbed(selector)
+  } else {
+    throw `Embed Code must be included and selector must match - ${selector}`
+  }
+}
+
 module.exports.init = () => {
   finallySystem.init()
 }
