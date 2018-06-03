@@ -83,7 +83,7 @@ finallySystem.loadEmbed = (selector) => {
   container.appendChild(iframe)
 }
 
-finallySystem.checkForEmbedSelector(selector) => {
+finallySystem.checkForEmbedSelector = (selector) => {
   let embedFound = document.querySelector(selector) !== null ? true : false
   if (embedFound) finallySystem.loadEmbed(selector)
 }
