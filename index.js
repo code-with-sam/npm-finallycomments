@@ -3,6 +3,7 @@ const finallySystem = {}
 
 finallySystem.init = () => {
     window.addEventListener('message', finallySystem.receiveMessage, false);
+    finallySystem.checkForEmbedSelector('.finally-comments')
 }
 
 finallySystem.receiveMessage = (event) => {
@@ -65,6 +66,26 @@ finallySystem.createFrame = (embedType, url, options) => {
     frame.iframeResizer( {}, '.finallycomments__frame');
   }
   return iframe
+}
+
+finallySystem.loadEmbed = (selector) => {
+  let container = document.querySelector(selector)
+  let embedType = container.dataset.api ? 'thread' : 'steem'
+  let url = container.dataset.id
+  let options = {
+    message: 'finally-frame-load',
+    reputation: container.dataset.reputation,
+    profile: container.dataset.profile,
+    values: container.dataset.values,
+    generated: container.dataset.generated
+  }
+  let iframe = finallySystem.createFrame(embedType, url, options)
+  container.appendChild(iframe)
+}
+
+finallySystem.checkForEmbedSelector(selector) => {
+  let embedFound = document.querySelector(selector) !== null ? true : false
+  if (embedFound) finallySystem.loadEmbed(selector)
 }
 
 module.exports.loadFromSteemitUrl = (steemitUrl, options) => {
