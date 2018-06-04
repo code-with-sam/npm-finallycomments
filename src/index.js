@@ -3,6 +3,7 @@ const finallySystem = {}
 
 finallySystem.init = () => {
     window.addEventListener('message', finallySystem.receiveMessage, false);
+    finallySystem.checkForEmbedSelector('.finally-comments')
 }
 
 finallySystem.receiveMessage = (event) => {
@@ -67,6 +68,26 @@ finallySystem.createFrame = (embedType, url, options) => {
   return iframe
 }
 
+finallySystem.loadEmbed = (selector) => {
+  let container = document.querySelector(selector)
+  let embedType = container.dataset.api ? 'thread' : 'steem'
+  let url = container.dataset.id
+  let options = {
+    message: 'finally-frame-load',
+    reputation: container.dataset.reputation,
+    profile: container.dataset.profile,
+    values: container.dataset.values,
+    generated: container.dataset.generated
+  }
+  let iframe = finallySystem.createFrame(embedType, url, options)
+  container.appendChild(iframe)
+}
+
+finallySystem.checkForEmbedSelector = (selector) => {
+  let embedFound = document.querySelector(selector) !== null ? true : false
+  if (embedFound) finallySystem.loadEmbed(selector)
+}
+
 module.exports.loadFromSteemitUrl = (steemitUrl, options) => {
   let settings = Object.assign({generated: false}, options || {})
   return finallySystem.createFrame('steem', steemitUrl, settings)
@@ -94,6 +115,17 @@ module.exports.directThreadLink = (embedType, url, options) => {
   return `https://finallycomments.com/viewer/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
 }
 
+module.exports.loadEmbed = (selector) => {
+  let embedFound = document.querySelector(selector) !== null ? true : false
+  if (embedFound){
+    finallySystem.loadEmbed(selector)
+  } else {
+    throw `Embed Code must be included and selector must match - ${selector}`
+  }
+}
+
 module.exports.init = () => {
   finallySystem.init()
 }
+
+window['finallyComments'] = finallySystem
