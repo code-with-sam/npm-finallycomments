@@ -22,5 +22,9 @@
   "homepage": "https://github.com/code-with-sam/npm-finallycomments#readme",
   "dependencies": {
     "iframe-resizer": "^3.6.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.10.2",
+    "webpack-cli": "^3.0.1"
   }
 }

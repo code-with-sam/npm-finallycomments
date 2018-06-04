@@ -127,3 +127,5 @@ module.exports.loadEmbed = (selector) => {
 module.exports.init = () => {
   finallySystem.init()
 }
+
+window['finallyComments'] = finallySystem
