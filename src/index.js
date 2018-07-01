@@ -77,7 +77,9 @@ finallySystem.loadEmbed = (selector) => {
     reputation: container.dataset.reputation,
     profile: container.dataset.profile,
     values: container.dataset.values,
-    generated: container.dataset.generated
+    generated: container.dataset.generated,
+    beneficiary: container.dataset.beneficiary,
+    beneficiaryWeight: container.dataset.beneficiaryWeight
   }
   let iframe = finallySystem.createFrame(embedType, url, options)
   container.appendChild(iframe)
@@ -89,23 +91,23 @@ finallySystem.checkForEmbedSelector = (selector) => {
 }
 
 module.exports.loadFromSteemitUrl = (steemitUrl, options) => {
-  let settings = Object.assign({generated: false}, options || {})
+  let settings = Object.assign({generated: false}, options)
   return finallySystem.createFrame('steem', steemitUrl, settings)
 }
 
 module.exports.loadThread = (slug, username, options) => {
   if (username === undefined || typeof username !== 'string') throw 'Username must be specified when using appendTo - Thread'
-  let settings = Object.assign({generated: true, username}, options || {})
+  let settings = Object.assign({generated: true, username}, options)
   return finallySystem.createFrame('thread', slug, settings)
 }
 
 module.exports.appendTo = (selector, embedType, id, username, options) => {
   if (typeof username !== 'string') options = username
   if(embedType === 'steem'){
-    return document.querySelector(selector).appendChild(module.exports.loadFromSteemitUrl(id, options))
+    return document.querySelector(selector).appendChild(module.exports.loadFromSteemitUrl(id, options || {}))
   }
   if(embedType === 'thread'){
-    return document.querySelector(selector).appendChild(module.exports.loadThread(id, username, options))
+    return document.querySelector(selector).appendChild(module.exports.loadThread(id, username, options || {}))
   }
   throw 'embedType must be specificed as "steem" or "thread"'
 }
