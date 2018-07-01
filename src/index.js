@@ -43,13 +43,13 @@ finallySystem.getPartsFromLink = (url) => {
 finallySystem.createUrlParams = (embedType, url, options)  => {
   let settings = { message: 'finally-frame-load' }
   settings = Object.assign(settings, options)
-  Object.keys(settings).map((key, index) => settings[key] = settings[key].toString() );
+  Object.keys(settings).map((key, index) =>  settings[key] = settings[key] ? settings[key].toString() : '' );
   if(embedType === 'steem') return finallySystem.getPartsFromLink(url)
   if(embedType === 'thread') return { permlink: `${url}`, author: `@${settings.username}`, category: 'finallycomments' }
 }
 
 finallySystem.createFrame = (embedType, url, options) => {
-  let urlParams = finallySystem.createUrlParams(embedType, url, options || {})
+  let urlParams = finallySystem.createUrlParams(embedType, url, options )
   let settings = Object.assign({generated: false, message: 'finally-frame-load'}, options)
   let iframe = document.createElement('iframe', { scrolling: 'no' })
   iframe.src = `https://finallycomments.com/thread/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
@@ -77,7 +77,7 @@ finallySystem.loadEmbed = (selector) => {
     beneficiaryWeight: container.dataset.beneficiaryWeight,
     guestComments: container.dataset.guestComments
   }
-  let iframe = finallySystem.createFrame(embedType, url, options || {})
+  let iframe = finallySystem.createFrame(embedType, url, options)
   container.appendChild(iframe)
 }
 
