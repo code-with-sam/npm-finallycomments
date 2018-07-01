@@ -95,6 +95,7 @@ If you want to contribute to this package create a fork, make your changes and c
 
 
 ## Change Log
+- v0.3.2 - check if settings defined
 - v0.3.1 - enable/disable guest comments support
 - v0.3.0 - comment beneficiary support
 - v0.2.1 - post-message not recongised without correct message property
