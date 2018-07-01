@@ -39,7 +39,8 @@ Example HTML on Page -
     data-profile="true"
     data-generated="false"
     data-beneficiary="username"
-    data-beneficiaryWeight="10">
+    data-beneficiaryWeight="10"
+    data-guestComments="false">
 </section>
 ```
 
@@ -94,6 +95,7 @@ If you want to contribute to this package create a fork, make your changes and c
 
 
 ## Change Log
+- v0.3.1 - enable/disable guest comments support
 - v0.3.0 - comment beneficiary support
 - v0.2.1 - post-message not recongised without correct message property
 - v0.2.0 - add autoload support for embeds found on page
