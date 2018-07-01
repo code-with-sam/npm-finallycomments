@@ -41,21 +41,16 @@ finallySystem.getPartsFromLink = (url) => {
 }
 
 finallySystem.createUrlParams = (embedType, url, options)  => {
-  let settings = {
-    message: 'finally-frame-load',
-    reputation: true,
-    profile: true,
-    values: true
-  }
-  settings = Object.assign(settings, options || {})
+  let settings = { message: 'finally-frame-load' }
+  settings = Object.assign(settings, options)
   Object.keys(settings).map((key, index) => settings[key] = settings[key].toString() );
   if(embedType === 'steem') return finallySystem.getPartsFromLink(url)
   if(embedType === 'thread') return { permlink: `${url}`, author: `@${settings.username}`, category: 'finallycomments' }
 }
 
 finallySystem.createFrame = (embedType, url, options) => {
-  let urlParams = finallySystem.createUrlParams(embedType, url, options)
-  let settings = Object.assign({generated: false, message: 'finally-frame-load'}, options || {})
+  let urlParams = finallySystem.createUrlParams(embedType, url, options || {})
+  let settings = Object.assign({generated: false, message: 'finally-frame-load'}, options)
   let iframe = document.createElement('iframe', { scrolling: 'no' })
   iframe.src = `https://finallycomments.com/thread/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
   iframe.width = '100%'
@@ -79,9 +74,10 @@ finallySystem.loadEmbed = (selector) => {
     values: container.dataset.values,
     generated: container.dataset.generated,
     beneficiary: container.dataset.beneficiary,
-    beneficiaryWeight: container.dataset.beneficiaryWeight
+    beneficiaryWeight: container.dataset.beneficiaryWeight,
+    guestComments: container.dataset.guestComments
   }
-  let iframe = finallySystem.createFrame(embedType, url, options)
+  let iframe = finallySystem.createFrame(embedType, url, options || {})
   container.appendChild(iframe)
 }
 
@@ -91,7 +87,7 @@ finallySystem.checkForEmbedSelector = (selector) => {
 }
 
 module.exports.loadFromSteemitUrl = (steemitUrl, options) => {
-  let settings = Object.assign({generated: false}, options)
+  let settings = Object.assign({generated: false}, options || {})
   return finallySystem.createFrame('steem', steemitUrl, settings)
 }
 
@@ -113,7 +109,7 @@ module.exports.appendTo = (selector, embedType, id, username, options) => {
 }
 
 module.exports.directThreadLink = (embedType, url, options) => {
-  let urlParams = finallySystem.createUrlParams(embedType, url, options)
+  let urlParams = finallySystem.createUrlParams(embedType, url, options || {})
   return `https://finallycomments.com/viewer/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
 }
 
