@@ -65,7 +65,7 @@ finallySystem.createFrame = (embedType, url, options) => {
 
 finallySystem.loadEmbed = (selector) => {
   let container = document.querySelector(selector)
-  let embedType = container.dataset.api ? 'thread' : 'steem'
+  let embedType = container.dataset.api === 'true' ? 'thread' : 'steem'
   let url = container.dataset.id
   let options = {
     message: 'finally-frame-load',
