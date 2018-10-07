@@ -40,35 +40,32 @@ finallySystem.getPartsFromLink = (url) => {
     }
 }
 
-finallySystem.createUrlParams = (embedType, url, options)  => {
-  let settings = { message: 'finally-frame-load' }
-  settings = Object.assign(settings, options)
-  Object.keys(settings).map((key, index) =>  settings[key] = settings[key] ? settings[key].toString() : '' );
+finallySystem.getUrlParams = (embedType,  url, options) => {
   if(embedType === 'steem') return finallySystem.getPartsFromLink(url)
-  if(embedType === 'thread') return { permlink: `${url}`, author: `@${settings.username}`, category: 'finallycomments' }
+  if(embedType === 'thread') return { permlink: `${url}`, author: `@${options.username}`, category: 'finallycomments' }
+  return false
 }
 
 finallySystem.createFrame = (embedType, url, options) => {
-  let urlParams = finallySystem.createUrlParams(embedType, url, options )
-  let settings = Object.assign({generated: false, message: 'finally-frame-load'}, options)
+  const urlParams = finallySystem.getUrlParams(embedType, url, options)
+  const settings = Object.assign({generated: 'false', message: 'finally-frame-load'}, options)
   let iframe = document.createElement('iframe', { scrolling: 'no' })
-  iframe.src = `https://finallycomments.com/thread/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
+  iframe.src = embedType === 'api' ? url : `https://finallycomments.com/thread/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
   iframe.width = '100%'
   iframe.style = 'border: none;'
   iframe.classList.add('finallycomments__frame')
   iframe.onload = () => {
     document.querySelector('.finallycomments__frame').contentWindow.postMessage(settings,'*')
-    frame.iframeResizer( {}, '.finallycomments__frame');
+    frame.iframeResizer({}, '.finallycomments__frame');
   }
   return iframe
 }
 
 finallySystem.loadEmbed = (selector) => {
   let container = document.querySelector(selector)
-  let embedType = container.dataset.api === 'true' ? 'thread' : 'steem'
+  let embedType = container.dataset.api === 'true' ? 'api' : 'steem'
   let url = container.dataset.id
   let options = {
-    message: 'finally-frame-load',
     reputation: container.dataset.reputation,
     profile: container.dataset.profile,
     values: container.dataset.values,
@@ -87,13 +84,12 @@ finallySystem.checkForEmbedSelector = (selector) => {
 }
 
 module.exports.loadFromSteemitUrl = (steemitUrl, options) => {
-  let settings = Object.assign({generated: false}, options || {})
-  return finallySystem.createFrame('steem', steemitUrl, settings)
+  return finallySystem.createFrame('steem', steemitUrl, options)
 }
 
 module.exports.loadThread = (slug, username, options) => {
   if (username === undefined || typeof username !== 'string') throw 'Username must be specified when using appendTo - Thread'
-  let settings = Object.assign({generated: true, username}, options)
+  let settings = Object.assign({generated: 'true', username}, options)
   return finallySystem.createFrame('thread', slug, settings)
 }
 
@@ -108,9 +104,15 @@ module.exports.appendTo = (selector, embedType, id, username, options) => {
   throw 'embedType must be specificed as "steem" or "thread"'
 }
 
-module.exports.directThreadLink = (embedType, url, options) => {
-  let urlParams = finallySystem.createUrlParams(embedType, url, options || {})
-  return `https://finallycomments.com/viewer/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
+
+module.exports.directThreadLinkFromURL = (url) => {
+  const urlParams = finallySystem.getPartsFromLink(url)
+  return `https://finallycomments.com/viewer/steem-post/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
+}
+
+module.exports.directThreadLinkFromID = (id, username) => {
+  const urlParams = { permlink: id, author: `@${username}`, category: 'finallycomments' }
+  return `https://finallycomments.com/viewer/custom-thread/${urlParams.category}/${urlParams.author}/${urlParams.permlink}`
 }
 
 module.exports.loadEmbed = (selector) => {
@@ -126,4 +128,4 @@ module.exports.init = () => {
   finallySystem.init()
 }
 
-window['finallyComments'] = finallySystem
+window['finallyComments'] = module.exports
