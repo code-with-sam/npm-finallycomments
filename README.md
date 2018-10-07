@@ -81,13 +81,22 @@ let options = {
 finallycomments.appendTo('main', 'thread', 'finally-hellomars', 'sambillingham', options)
 ```
 
-### directThreadLink(embedType, url, options)
+### directThreadLinkFromURL(url)
+Create a link to comments for a steem post
 ```
 import finallycomments from 'finallycomments'
-finallycomments.init()
-let href = finallycomments.directThreadLink('steem', 'https://steemit.com/utopian-io/@sambillingham/finally-comments-api-and-new-dashboard-features')
+let href = finallycomments.directThreadLink('https://steemit.com/utopian-io/@sambillingham/finally-comments-api-and-new-dashboard-features')
 let link = `<a href="${href}">Check out this discussion we has on Steem yesterday</a>`
 ````
+
+### directThreadLinkFromID(ID, username)
+Create a link to a custom thread
+```
+import finallycomments from 'finallycomments'
+let href = finallycomments.directThreadLink('finally-hellomars', 'sambillingham')
+let link = `<a href="${href}">Read the full thread details here</a>`
+````
+
 
 ## Contribution
 
