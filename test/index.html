@@ -1,0 +1,77 @@
+<h2>STEEM THREAD</h2>
+<!-- <section class="finally-comments"
+    data-id="https://steemit.com/finallycomments/@sambillingham/finally-adna"
+    data-reputation="true"
+    data-values="true"
+    data-profile="true"
+    data-generated="true">
+</section> -->
+
+<h2>Custom THREAD</h2>
+
+<!-- <section class="finally-comments"
+    data-id="https://steemit.com/finallycomments/@sambillingham/finally-hellomars"
+    data-reputation="true"
+    data-values="true"
+    data-profile="true"
+    data-generated="true">
+</section> -->
+
+<h2>API THREAD</h2>
+<p>Note: API thread should only generate new embeds when requested form an authorized domain</p>
+
+<!-- <section class="finally-comments"
+    data-id="https://steemit.com/finallycomments/@sambillingham/finally-hellomars"
+    data-reputation="true"
+    data-values="true"
+    data-profile="true"
+    data-generated="true">
+</section> -->
+
+<h2>Test programatic loading and appending</h2>
+<section class="comments"></section>
+
+<h2>loadEmbed for nonstandard class</h2>
+<!-- <section class="comments--non-standard-class"
+    data-id="https://steemit.com/finallycomments/@sambillingham/finally-hellomars"
+    data-reputation="true"
+    data-values="true"
+    data-profile="true"
+    data-generated="true">
+</section> -->
+
+<script src="../dist/finally.min.js"></script>
+<script>
+
+// init should auto load any embeds on page
+// STEEM THREAD
+// CUSTOM THREAD
+// API THREAD (make new thread where applicable)
+// finallyComments.init()
+
+// STEEM - loadFromSteemitUrl()
+// const comments = finallyComments.loadFromSteemitUrl('https://steemit.com/photofeed/@sambillingham/iceland-road-trip-photos')
+// document.querySelector('.comments').appendChild(comments)
+
+// CUSTOM - loadThread()
+// const comments = finallyComments.loadThread('finally-hellomars', 'sambillingham')
+// document.querySelector('.comments').appendChild(comments)
+
+// appendTo() - steem
+// finallyComments.appendTo('.comments', 'steem', 'https://steemit.com/photofeed/@sambillingham/iceland-road-trip-photos')
+
+// appendTo() - thread
+// finallyComments.appendTo('.comments', 'thread', 'finally-hellomars', 'sambillingham')
+
+// directThreadLinkFromURL()
+// let link = finallyComments.directThreadLinkFromURL( 'https://steemit.com/photofeed/@sambillingham/iceland-road-trip-photos')
+// console.log(link)
+
+// directThreadLinkFromID()
+// let link = finallyComments.directThreadLinkFromID('finally-hellomars', 'sambillingham')
+// console.log(link)
+
+
+// loadEmbed() -- if not using default 'finally-comments ' selector must also loadembed after init
+// finallyComments.loadEmbed('.comments--non-standard-class')
+</script>
